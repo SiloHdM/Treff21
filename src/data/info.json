@@ -3,6 +3,11 @@
   "shortName": "Treff 21",
   "logoText": "Treff 21 Café | Bar",
   "category": "Bar",
+  "style": "Klassisch orientalische Bar",
+  "smokingAllowed": true,
+  "games": [
+    "Okey"
+  ],
   "address": {
     "street": "Stuttgarter Str. 36",
     "postalCode": "71638",

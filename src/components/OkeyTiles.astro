@@ -1,0 +1,36 @@
+---
+// Okey-Steine auf einem Ständer – eigene Illustration (Reihe 9–12 in Rot + ein Joker-Stein).
+interface Props { class?: string }
+const { class: cls = '' } = Astro.props;
+const tiles = [
+  { n: '9', c: '#c8323c' }, { n: '10', c: '#c8323c' }, { n: '11', c: '#c8323c' }, { n: '12', c: '#c8323c' },
+];
+---
+<svg class={`okey ${cls}`} viewBox="0 0 330 150" aria-hidden="true" focusable="false">
+  <defs>
+    <linearGradient id="okTile" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fbf5e8"/><stop offset="1" stop-color="#e6dcc6"/></linearGradient>
+    <linearGradient id="okRack" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3a2a1c"/><stop offset="1" stop-color="#1c140d"/></linearGradient>
+    <filter id="okShadow" x="-20%" y="-20%" width="140%" height="160%"><feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#000" flood-opacity=".55"/></filter>
+  </defs>
+  <g filter="url(#okShadow)">
+    {tiles.map((t, i) => (
+      <g transform={`translate(${18 + i * 62} ${12 + (i % 2) * 3}) rotate(${(i - 1.5) * 1.5} 26 38)`}>
+        <rect width="52" height="76" rx="7" fill="url(#okTile)"/>
+        <rect x="1" y="1" width="50" height="74" rx="6" fill="none" stroke="#fff" stroke-opacity=".7"/>
+        <text x="26" y="40" text-anchor="middle" font-family="Georgia, serif" font-weight="700" font-size={t.n.length > 1 ? 26 : 30} fill={t.c}>{t.n}</text>
+        <circle cx="26" cy="58" r="5" fill={t.c}/>
+      </g>
+    ))}
+    <!-- Joker -->
+    <g transform="translate(266 22) rotate(6 26 38)">
+      <rect width="52" height="76" rx="7" fill="url(#okTile)"/>
+      <path d="M26 24c4 6 10 8 10 14a10 10 0 0 1-20 0c0-6 6-8 10-14Z" fill="#1f6f4a"/>
+      <path d="M26 48v10" stroke="#1f6f4a" stroke-width="3" stroke-linecap="round"/>
+    </g>
+  </g>
+  <rect x="4" y="96" width="322" height="22" rx="5" fill="url(#okRack)"/>
+  <rect x="4" y="96" width="322" height="3" rx="1.5" fill="#f5b971" fill-opacity=".35"/>
+</svg>
+<style>
+  .okey { width: 100%; height: auto; overflow: visible; }
+</style>

@@ -12,8 +12,9 @@ oder bewusst ausgeblendet, bis die Information vorliegt. **Es wurden keine Fakte
 | 5 | **Instagram, Facebook, E-Mail** | `src/data/info.json` → `instagram`, `facebook`, `email` | Footer, Impressum, Datenschutz |
 | 6 | **Domain und Hosting** | Build mit `SITE_URL=https://… npm run build`; Hoster in `src/pages/datenschutz.astro` eintragen | canonical, `og:url`, `sitemap-index.xml`, Sitemap-Eintrag in `robots.txt` |
 | 7 | **Preis „Hofbräu 0,5 l – 2,50 €“ prüfen** (auffällig günstig ggü. 0,33-l-Bieren) | `src/data/menu.json` → Eintrag Hofbräu, danach Feld `todo` löschen | Platzhalter in der Karte verschwindet |
-| 8 | Optional: 1–2 Sätze vom Inhaber über den Laden | `src/components/About.astro` | ersetzt den Platzhalter in „Die Bar“ |
-| 9 | Optional: Events, Speisen/Snacks, Reservierung per Telefon oder WhatsApp | – | neue Sektion bzw. Button |
+| 8 | ~~1–2 Sätze vom Inhaber~~ – erledigt: orientalische Bar, Raucherbar, Okey, gemeinsame Zeit (Texte in `About.astro` und `Highlights.astro`, bitte gegenlesen) | – | – |
+| 8a | **Raucherbar: Hinweis zu Zutritt/Altersgrenze** prüfen (Landesnichtraucherschutzgesetz BW) – ggf. „Zutritt ab 18“ ergänzen | `src/components/Highlights.astro` | Platzhalter in der Karte „Raucherbar“ verschwindet |
+| 9 | Optional: Events, Speisen/Snacks, Reservierung per Telefon oder WhatsApp, weitere Spiele (z. B. Tavla) – nur wenn es sie wirklich gibt | – | neue Sektion bzw. Button |
 | 10 | Datenschutzerklärung rechtlich prüfen lassen (Entwurf passend zum Setup: keine Cookies, keine Tracker, Google Maps erst nach Klick) | `src/pages/datenschutz.astro` | – |
 | 11 | Optional: echtes Handy-/Gimbal-Video vom Laden | Dateien in `public/video/` ersetzen (gleiche Namen) | Code bleibt gleich |
 

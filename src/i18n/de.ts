@@ -3,14 +3,14 @@
 export default {
   lang: 'de',
   meta: {
-    title: 'Treff 21 – Café & Bar in Ludwigsburg',
+    title: 'Treff 21 – Orientalische Bar & Raucherbar in Ludwigsburg',
     description:
-      'Treff 21 | TwentyOne Café & Bar, Stuttgarter Str. 36 in Ludwigsburg. Kaffee, Bier, Wein, Aperitif und Cocktails – 4,8 ★ bei 54 Google-Bewertungen, 10–20 € pro Person.',
+      'Treff 21 | TwentyOne Café & Bar – klassisch orientalische Bar und Raucherbar in der Stuttgarter Str. 36, Ludwigsburg. Okey spielen, Cocktails, Bier und Kaffee. 4,8 ★ bei 54 Google-Bewertungen, 10–20 € pro Person.',
   },
   skip: 'Zum Inhalt springen',
   nav: { bar: 'Bar', menu: 'Karte', gallery: 'Galerie', visit: 'Besuch', call: 'Anrufen', open: 'Menü öffnen', close: 'Menü schließen', home: 'Treff 21 – zur Startseite' },
   hero: {
-    kicker: 'Café · Bar · Ludwigsburg',
+    kicker: 'Orientalische Bar · Ludwigsburg',
     route: 'Route planen',
     menu: 'Getränkekarte',
     open: 'Jetzt geöffnet',

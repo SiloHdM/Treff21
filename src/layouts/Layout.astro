@@ -32,6 +32,8 @@ const jsonLd: Record<string, unknown> = {
   telephone: info.phone.tel,
   priceRange: info.priceRange,
   servesCuisine: 'Getränke',
+  smokingAllowed: info.smokingAllowed,
+  description: t.meta.description,
   aggregateRating: {
     '@type': 'AggregateRating',
     ratingValue: info.googleRating.stars,

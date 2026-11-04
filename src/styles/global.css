@@ -54,8 +54,9 @@ p { text-wrap: pretty; }
   position: fixed; left: var(--space-4); top: var(--space-4); z-index: 100;
   padding: var(--space-3) var(--space-5); border-radius: var(--radius-pill);
   background: var(--amber); color: var(--on-amber); font-weight: 700; text-decoration: none;
-  transform: translateY(-200%); transition: transform var(--dur-base) var(--ease-out);
+  transform: translateY(calc(-100% - 2rem)); transition: transform var(--dur-base) var(--ease-out);
 }
+.skip-link:not(:focus-visible) { clip-path: inset(50%); }
 .skip-link:focus-visible { transform: none; }
 
 .container {

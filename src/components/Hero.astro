@@ -28,7 +28,10 @@ import Pendant from './Pendant.astro';
     <p class="hero__sub" data-reveal style="--i:2">
       <Icon name="pin" />{info.address.street} · {info.address.city}
     </p>
-    <div class="hero__actions" data-reveal style="--i:3">
+    <ul class="hero__tags" role="list" data-reveal style="--i:3">
+      <li>Raucherbar</li><li>Okey</li><li>{info.priceRange} p. P.</li>
+    </ul>
+    <div class="hero__actions" data-reveal style="--i:4">
       <a class="btn btn--primary" href={links.route} target="_blank" rel="noopener">
         <Icon name="route" />{t.hero.route}<span class="sr-only"> (öffnet Google Maps)</span>
       </a>
@@ -73,6 +76,7 @@ import Pendant from './Pendant.astro';
 
   .hero__content { display: grid; justify-items: start; gap: var(--space-4); }
   .hero__kicker { color: var(--text); text-shadow: 0 1px 12px rgba(0, 0, 0, 0.6); }
+  @media (max-width: 479px) { .hero__kicker { letter-spacing: 0.2em; margin-right: -0.2em; font-size: 0.75rem; } }
   .hero__title {
     font-size: var(--fs-hero);
     font-weight: 300;
@@ -87,6 +91,14 @@ import Pendant from './Pendant.astro';
     color: var(--text); font-weight: 500;
   }
   .hero__sub :global(svg) { width: 1.1em; height: 1.1em; color: var(--amber); }
+  .hero__tags { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+  .hero__tags li {
+    padding: 0.3rem 0.85rem; border-radius: var(--radius-pill);
+    font-size: 0.8125rem; font-weight: 600; letter-spacing: 0.02em;
+    color: var(--text); background: rgba(11, 10, 16, 0.55);
+    border: 1px solid rgba(245, 185, 113, 0.35);
+    -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+  }
   .hero__actions { display: flex; flex-wrap: wrap; gap: var(--space-3); margin-top: var(--space-3); }
   @media (max-width: 479px) {
     .hero__actions { width: 100%; }

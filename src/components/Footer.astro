@@ -1,0 +1,64 @@
+---
+import t from '../i18n/de';
+import { info, links } from '../lib/site';
+import Logo from './Logo.astro';
+const year = new Date().getFullYear();
+---
+<footer class="footer facets" data-facets>
+  <div class="container footer__grid">
+    <div class="footer__brand">
+      <a href="/" class="footer__logo"><Logo size="lg" /><span class="sr-only"> – zur Startseite</span></a>
+      <span class="todo">[[TODO: Original-Logo als SVG oder transparentes PNG]]</span>
+    </div>
+    <div class="footer__col">
+      <p class="footer__label">Kontakt</p>
+      <address>
+        {info.address.street}<br />{info.address.postalCode} {info.address.city}<br />
+        <a href={links.tel}>{info.phone.display}</a><br />
+        {info.email ? <a href={`mailto:${info.email}`}>{info.email}</a> : <span class="todo">[[TODO: E-Mail]]</span>}
+      </address>
+    </div>
+    <div class="footer__col">
+      <p class="footer__label">{t.footer.social}</p>
+      <ul role="list">
+        <li>{info.instagram ? <a href={info.instagram}>Instagram</a> : <span class="todo">[[TODO: Instagram]]</span>}</li>
+        <li>{info.facebook ? <a href={info.facebook}>Facebook</a> : <span class="todo">[[TODO: Facebook]]</span>}</li>
+      </ul>
+    </div>
+    <div class="footer__col">
+      <p class="footer__label">Rechtliches</p>
+      <ul role="list">
+        <li><a href="/impressum">{t.footer.imprint}</a></li>
+        <li><a href="/datenschutz">{t.footer.privacy}</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="container footer__base">
+    <p>{t.footer.responsible}</p>
+    <p>© {year} {info.name}</p>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    --facet-alpha: 0.032;
+    background: linear-gradient(to bottom, var(--bg), var(--bg-elevated));
+    border-top: 1px solid var(--line);
+    padding-block: clamp(4rem, 9vw, 6.5rem) calc(var(--space-6) + env(safe-area-inset-bottom));
+  }
+  .footer__grid { display: grid; gap: var(--space-7); }
+  @media (min-width: 760px) { .footer__grid { grid-template-columns: 1.6fr 1fr 1fr 1fr; } }
+  .footer__brand { display: grid; gap: var(--space-4); justify-items: start; align-content: start; }
+  .footer__logo { text-decoration: none; }
+  .footer__label { font-family: var(--font-display); font-size: 0.72rem; letter-spacing: var(--tracking-kicker); text-transform: uppercase; color: var(--text-muted); margin-bottom: var(--space-3); }
+  .footer address { font-style: normal; line-height: 1.9; }
+  .footer__col a, .footer address a { text-decoration: none; display: inline-block; padding-block: 0.35rem; }
+  .footer__col a:hover, .footer address a:hover { color: var(--amber); }
+  .footer__col ul { display: grid; gap: 0.25rem; }
+  .footer__base {
+    display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--space-3);
+    margin-top: clamp(3rem, 7vw, 5rem); padding-top: var(--space-5); border-top: 1px solid var(--line);
+    font-size: var(--fs-small); color: var(--text-muted);
+  }
+  .footer__base p:first-child { font-family: var(--font-display); font-style: italic; color: var(--concrete); }
+</style>

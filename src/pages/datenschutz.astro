@@ -1,0 +1,33 @@
+---
+import LegalLayout from '../layouts/LegalLayout.astro';
+import { info } from '../lib/site';
+---
+<LegalLayout title="Datenschutz">
+  <p class="notice">Entwurf passend zum technischen Aufbau dieser Website (statische Seite, keine Cookies, keine Tracker, Google Maps nur nach Klick). Hosting-Anbieter und Verantwortlicher fehlen noch. Bitte vor der Veröffentlichung rechtlich prüfen lassen.</p>
+
+  <h2>1. Verantwortlicher</h2>
+  <p>
+    <span class="todo">[[TODO: Name des Inhabers bzw. Firma]]</span><br />
+    {info.address.street}, {info.address.postalCode} {info.address.city}<br />
+    Telefon: {info.phone.display}<br />
+    E-Mail: {info.email ?? <span class="todo">[[TODO: E-Mail]]</span>}
+  </p>
+
+  <h2>2. Überblick</h2>
+  <p>Diese Website ist eine rein statische Informationsseite. Es gibt keine Kontaktformulare, keine Benutzerkonten, keine Cookies und keine Analyse- oder Tracking-Werkzeuge. Schriften und alle Bilder werden direkt von unserem Server ausgeliefert; es werden dafür keine Anfragen an Dritte (z. B. Google Fonts) gestellt.</p>
+
+  <h2>3. Hosting und Server-Logfiles</h2>
+  <p>Diese Website wird gehostet bei <span class="todo">[[TODO: Hosting-Anbieter, Anschrift, ggf. Hinweis auf Auftragsverarbeitungsvertrag]]</span>.</p>
+  <p>Beim Aufruf der Seite verarbeitet der Hosting-Anbieter technisch notwendige Daten, die Ihr Browser übermittelt (z. B. IP-Adresse, Datum und Uhrzeit, aufgerufene Datei, Browsertyp). Das ist nötig, um die Website auszuliefern und ihre Sicherheit zu gewährleisten. Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an einem sicheren und funktionsfähigen Betrieb). <span class="todo">[[TODO: Speicherdauer der Logfiles laut Hoster]]</span></p>
+
+  <h2>4. Google Maps (nur nach Klick)</h2>
+  <p>Im Abschnitt „Besuch“ zeigen wir zunächst nur eine statische Vorschau. Erst wenn Sie auf „Karte laden (Google Maps)“ klicken, wird eine Karte von Google eingebunden. Anbieter ist die Google Ireland Limited, Gordon House, Barrow Street, Dublin 4, Irland. Dabei werden u. a. Ihre IP-Adresse und Informationen über Ihren Browser an Google übertragen; Google kann dabei auch Cookies setzen und Daten in die USA übertragen.</p>
+  <p>Rechtsgrundlage ist Ihre Einwilligung durch den Klick (Art. 6 Abs. 1 lit. a DSGVO, § 25 Abs. 1 TDDDG). Die Einwilligung gilt nur für den aktuellen Seitenaufruf; beim nächsten Besuch wird wieder nur die Vorschau gezeigt. Weitere Informationen: <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Datenschutzerklärung von Google</a>.</p>
+  <p>Links wie „Route planen“ oder „In Google Maps öffnen“ führen Sie auf die Website von Google. Erst dort gelten die Datenschutzbestimmungen von Google.</p>
+
+  <h2>5. Telefon</h2>
+  <p>Wenn Sie uns anrufen, verarbeiten wir Ihre Angaben nur, um Ihr Anliegen zu bearbeiten (Art. 6 Abs. 1 lit. b bzw. f DSGVO).</p>
+
+  <h2>6. Ihre Rechte</h2>
+  <p>Sie haben das Recht auf Auskunft (Art. 15 DSGVO), Berichtigung (Art. 16), Löschung (Art. 17), Einschränkung der Verarbeitung (Art. 18), Datenübertragbarkeit (Art. 20) sowie Widerspruch gegen Verarbeitungen auf Grundlage berechtigter Interessen (Art. 21). Eine erteilte Einwilligung können Sie jederzeit mit Wirkung für die Zukunft widerrufen. Außerdem können Sie sich bei einer Datenschutz-Aufsichtsbehörde beschweren, z. B. beim Landesbeauftragten für den Datenschutz und die Informationsfreiheit Baden-Württemberg.</p>
+</LegalLayout>

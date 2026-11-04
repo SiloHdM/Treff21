@@ -1,0 +1,30 @@
+---
+import Layout from './Layout.astro';
+import Logo from '../components/Logo.astro';
+import Footer from '../components/Footer.astro';
+interface Props { title: string }
+const { title } = Astro.props;
+---
+<Layout title={`${title} – Treff 21`} description={`${title} von Treff 21 | TwentyOne Café & Bar, Ludwigsburg.`}>
+  <header class="legal-nav container">
+    <a href="/"><Logo /><span class="sr-only"> – zur Startseite</span></a>
+    <a class="link-arrow" href="/">← Zur Startseite</a>
+  </header>
+  <main id="inhalt" class="legal container">
+    <h1 class="h2">{title}</h1>
+    <div class="legal__body"><slot /></div>
+  </main>
+  <Footer />
+</Layout>
+<style>
+  .legal-nav { display: flex; align-items: center; justify-content: space-between; gap: 1rem; min-height: var(--nav-h); padding-block: 1rem; }
+  .legal-nav a:first-child { text-decoration: none; }
+  .legal { padding-block: clamp(3rem, 8vw, 6rem); max-width: 48rem; }
+  .legal__body { margin-top: var(--space-7); display: grid; gap: var(--space-4); color: var(--text-muted); }
+  .legal__body :global(h2) { font-size: var(--fs-h3); color: var(--text); margin-top: var(--space-6); }
+  .legal__body :global(h3) { font-size: 1.1rem; color: var(--text); margin-top: var(--space-3); font-family: var(--font-body); font-weight: 650; }
+  .legal__body :global(strong) { color: var(--text); }
+  .legal__body :global(ul) { padding-left: 1.2rem; display: grid; gap: 0.3rem; }
+  .legal__body :global(a) { color: var(--amber); }
+  .legal__body :global(.notice) { padding: 1rem 1.25rem; border: 1px dashed rgba(245, 185, 113, 0.5); border-radius: var(--radius-m); color: var(--text); }
+</style>

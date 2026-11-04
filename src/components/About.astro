@@ -1,0 +1,92 @@
+---
+import { Picture } from 'astro:assets';
+import t from '../i18n/de';
+import { info, formatDecimal } from '../lib/site';
+import Leaf from './Leaf.astro';
+import Pendant from './Pendant.astro';
+import Star from './Star.astro';
+import lounge from '../assets/photos/lounge-fenster.jpg';
+import theke from '../assets/photos/bar-theke.jpg';
+---
+<section class="section about" id="bar" aria-labelledby="about-title">
+  <span class="glow" style="--c: var(--glow-magenta); --size: 55vmax; top: 10%; right: -18vmax;"></span>
+  <span class="glow" style="--size: 45vmax; bottom: -10%; left: -20vmax;"></span>
+  <Leaf class="about__leaf" style="--w: clamp(140px, 22vw, 280px)" />
+
+  <div class="container about__grid">
+    <div class="about__text">
+      <Pendant class="about__pendant" />
+      <p class="kicker" data-reveal>{t.about.kicker}</p>
+      <h2 class="h2" id="about-title" data-reveal style="--i:1">Facetten, Pflanzen, <em>Edison&shy;licht.</em></h2>
+      <div class="about__copy" data-reveal style="--i:2">
+        <p>Theke und Decke sind mit facettierten Pyramidenkacheln verkleidet, darüber glimmen Edison-Glühbirnen.</p>
+        <p>Violettes und pinkes Licht fällt auf rohen Beton. Unter der Decke hängen Grünpflanzen und Eukalyptus an schwarzen Gittern, Palmen stehen an den großen Fenstern.</p>
+        <p>Ein Rundbogen verbindet die Räume.</p>
+        <p><span class="todo">[[TODO: optional 1–2 Sätze vom Inhaber über den Laden]]</span></p>
+      </div>
+
+      <dl class="facts" data-reveal style="--i:3">
+        <div>
+          <dt>Google</dt>
+          <dd><Star class="facts__star" /> {formatDecimal(info.googleRating.stars)} <span class="muted">/ {info.googleRating.count} Bewertungen</span></dd>
+        </div>
+        <div>
+          <dt>Pro Person</dt>
+          <dd>{info.priceRange}</dd>
+        </div>
+      </dl>
+    </div>
+
+    <figure class="about__media">
+      <div class="arch" data-reveal>
+        <Picture src={lounge} formats={['avif', 'webp']} fallbackFormat="jpg" widths={[640, 1280, lounge.width]}
+          sizes="(min-width: 900px) 72vw, 160vw" quality={78} pictureAttributes={{ 'data-parallax': '' }}
+          alt="Sitzbereich mit großen Fenstern zur Straße, Betonsäule und Pendelleuchten mit Edison-Birnen; violettes Licht und ein Pflanzengitter unter der Decke." />
+      </div>
+      <div class="about__inset" data-reveal style="--i:2">
+        <Picture src={theke} formats={['avif', 'webp']} fallbackFormat="jpg" widths={[320, 640]}
+          sizes="(min-width: 900px) 15vw, 34vw" quality={78}
+          alt="Detail der Bartheke: Front aus facettierten, violett beleuchteten Pyramidenkacheln, davor Barhocker." />
+      </div>
+    </figure>
+  </div>
+</section>
+
+<style>
+  .about { overflow-x: clip; }
+  .about :global(.about__leaf) { top: -2rem; left: -4.5rem; rotate: 150deg; opacity: 0.3; }
+  .about__grid { display: grid; gap: clamp(3rem, 8vw, 6rem); align-items: center; }
+  @media (min-width: 900px) { .about__grid { grid-template-columns: 1fr 1fr; } }
+  .about__text { display: grid; gap: var(--space-5); justify-items: start; }
+  .about__text :global(.about__pendant) { margin-bottom: var(--space-2); margin-left: 0.2rem; }
+  .about__copy { display: grid; gap: var(--space-3); color: var(--text-muted); max-width: 40ch; }
+  .about__copy p:first-child { color: var(--text); }
+
+  .facts { display: flex; flex-wrap: wrap; gap: var(--space-6); margin-top: var(--space-3); padding-top: var(--space-5); border-top: 1px solid var(--line); width: 100%; }
+  .facts dt { font-family: var(--font-display); font-size: 0.72rem; letter-spacing: var(--tracking-kicker); text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.35rem; }
+  .facts dd { display: flex; align-items: center; gap: 0.35rem; font-family: var(--font-display); font-size: 1.6rem; font-variation-settings: 'opsz' 48; }
+  .facts dd .muted { font-family: var(--font-body); font-size: 0.875rem; }
+  .facts__star { width: 1.1rem; height: 1.1rem; color: var(--amber); }
+
+  .about__media { position: relative; margin: 0; padding-bottom: 12%; }
+  /* Rundbogen-Maske – Zitat des Raums */
+  .arch {
+    position: relative; overflow: hidden;
+    border-radius: 50% 50% 0 0 / 30% 30% 0 0;
+    aspect-ratio: 4 / 5;
+    box-shadow: 0 40px 120px -40px rgba(139, 92, 246, 0.45);
+    margin-left: auto; width: min(100%, 34rem);
+  }
+  .arch::after { content: ''; position: absolute; inset: 0; border-radius: inherit; box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08); pointer-events: none; }
+  /* Überstand oben/unten für den Parallax (max. ~8 %) */
+  .arch :global(picture) { position: absolute; inset: -9% 0; }
+  .arch :global(img) { width: 100%; height: 100%; object-fit: cover; object-position: 62% 50%; }
+  .about__inset {
+    position: absolute; left: 0; bottom: 0; width: 38%;
+    border-radius: var(--radius-m); overflow: hidden;
+    border: 6px solid var(--bg);
+    aspect-ratio: 3 / 4;
+  }
+  .about__inset :global(img) { width: 100%; height: 100%; object-fit: cover; object-position: 50% 70%; }
+  @media (min-width: 900px) { .about__inset { left: -6%; width: 34%; } }
+</style>

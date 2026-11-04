@@ -1,0 +1,179 @@
+---
+import t from '../i18n/de';
+import menu from '../data/menu.json';
+import { formatPrice } from '../lib/site';
+import Leaf from './Leaf.astro';
+
+type Item = { name: string; detail?: string; price: number; todo?: string; seasonal?: number[] };
+type Cat = { id: string; title: string; short: string; subtitle?: string; featured?: boolean; items: Item[] };
+const cats = menu.categories as Cat[];
+const byId = Object.fromEntries(cats.map((c) => [c.id, c]));
+const columns = menu.columns.map((col) => col.map((id) => byId[id]));
+// gleiche Preise in einer Kategorie → „je 7,00 €“ einmal zeigen, Einträge trotzdem mit Preis (wie Druckkarte)
+---
+<section class="section menu" id="karte" aria-labelledby="menu-title">
+  <span class="glow" style="--size: 70vmax; top: 15%; left: 50%; translate: -50% 0; --c: rgba(139,92,246,.16)"></span>
+  <Leaf class="menu__leaf menu__leaf--tr" style="--w: clamp(160px, 26vw, 340px)" flip />
+  <Leaf class="menu__leaf menu__leaf--bl" style="--w: clamp(150px, 22vw, 300px)" variant="eucalyptus" />
+
+  <header class="container menu__head">
+    <h2 id="menu-title" class="menu__title" data-reveal>
+      <span aria-hidden="true">G E T R Ä N K E K A R T E</span><span class="sr-only">{t.menu.kicker}</span>
+    </h2>
+    <span class="menu__rule" aria-hidden="true"></span>
+  </header>
+
+  <nav class="chips facets" aria-label={t.menu.categories} data-chips>
+    <ul role="list" class="chips__list">
+      {cats.map((c) => <li><a class="chip" href={`#k-${c.id}`} data-chip>{c.short}</a></li>)}
+    </ul>
+  </nav>
+
+  <div class="container menu__cols">
+    {columns.map((col) => (
+      <div class="menu__col">
+        {col.map((c) => (
+          <section class:list={['cat', { 'cat--featured': c.featured }]} id={`k-${c.id}`} aria-labelledby={`h-${c.id}`} data-cat data-reveal>
+            <h3 class="cat__title" id={`h-${c.id}`}>
+              {c.title}
+              {c.subtitle && <span class="cat__sub">{c.subtitle}</span>}
+            </h3>
+            <ul role="list" class="cat__list">
+              {c.items.map((i) => (
+                <li class="item" data-seasonal={i.seasonal?.join(',')}>
+                  <span class="item__name">
+                    {i.name}
+                    {i.detail && <span class="item__detail">{i.detail}</span>}
+                    {i.seasonal && <span class="badge" data-season-badge hidden>{t.menu.seasonal}</span>}
+                    {i.todo && <span class="todo">[[TODO: {i.todo}]]</span>}
+                  </span>
+                  <span class="item__leader" aria-hidden="true"></span>
+                  <span class="item__price">{formatPrice(i.price)}</span>
+                </li>
+              ))}
+            </ul>
+          </section>
+        ))}
+      </div>
+    ))}
+  </div>
+
+  <p class="container menu__note">{menu.note}</p>
+</section>
+
+<style>
+  .menu { overflow-x: clip; }
+  .menu :global(.menu__leaf--tr) { top: -1.5rem; right: -3rem; rotate: 200deg; opacity: 0.45; }
+  .menu :global(.menu__leaf--bl) { bottom: -1rem; left: -3rem; rotate: 10deg; opacity: 0.35; }
+
+  .menu__head { display: grid; justify-items: center; gap: var(--space-5); text-align: center; }
+  .menu__title {
+    font-size: clamp(1.6rem, 6.2vw, 4.25rem);
+    font-weight: 400; font-variation-settings: 'opsz' 144;
+    color: var(--concrete);
+    line-height: 1.1;
+    white-space: nowrap;
+  }
+  /* Der Titel ist mit echten Leerzeichen gesperrt (Zitat der Druckkarte); auf schmalen Screens etwas enger */
+  @media (max-width: 520px) { .menu__title { font-size: 6vw; letter-spacing: -0.04em; } }
+  .menu__rule { width: 1px; height: 3rem; background: linear-gradient(var(--line-strong), transparent); }
+
+  /* Kategorien-Chips: mobil horizontal scrollbar & sticky */
+  .chips {
+    position: sticky; top: calc(var(--nav-h) + env(safe-area-inset-top)); z-index: 5;
+    margin-block: var(--space-6) var(--space-7);
+    background: rgba(11, 10, 16, 0.82);
+    -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px);
+    border-block: 1px solid var(--line);
+    --facet-alpha: 0.035;
+  }
+  .chips__list {
+    display: flex; gap: var(--space-2);
+    overflow-x: auto; scrollbar-width: none;
+    padding: var(--space-3) var(--gutter);
+    scroll-padding-inline: var(--gutter);
+    max-width: calc(var(--max-w) + 2 * var(--gutter)); margin-inline: auto;
+    mask-image: linear-gradient(to right, transparent, #000 var(--gutter), #000 calc(100% - var(--gutter)), transparent);
+  }
+  .chips__list::-webkit-scrollbar { display: none; }
+  @media (min-width: 1100px) { .chips__list { justify-content: center; mask-image: none; } }
+  .chip {
+    display: inline-flex; align-items: center; min-height: 44px; padding: 0 1.05rem;
+    border-radius: var(--radius-pill); border: 1px solid var(--line-strong);
+    font-size: 0.875rem; font-weight: 600; white-space: nowrap; text-decoration: none; color: var(--text-muted);
+    transition: color var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out), background-color var(--dur-fast) var(--ease-out);
+  }
+  .chip:hover { color: var(--text); border-color: rgba(245, 185, 113, 0.6); }
+  .chip[aria-current='true'] { color: var(--on-amber); background: var(--amber); border-color: var(--amber); }
+
+  .menu__cols { display: grid; gap: var(--space-7); }
+  @media (min-width: 900px) { .menu__cols { grid-template-columns: 1fr 1fr; column-gap: clamp(3rem, 7vw, 7rem); } }
+  .menu__col { display: grid; gap: var(--space-7); align-content: start; }
+
+  .cat { scroll-margin-top: calc(var(--nav-h) + 6rem); }
+  .cat__title {
+    display: flex; align-items: baseline; justify-content: space-between; gap: var(--space-3);
+    font-size: 0.95rem; font-weight: 500;
+    letter-spacing: var(--tracking-kicker); text-transform: uppercase;
+    color: var(--concrete);
+    padding-bottom: var(--space-3); margin-bottom: var(--space-3);
+    border-bottom: 1px solid var(--line);
+  }
+  .cat__sub { font-family: var(--font-body); font-size: 0.8rem; letter-spacing: 0.05em; text-transform: none; color: var(--text-muted); }
+  .cat__list { display: grid; }
+  .item { display: flex; align-items: baseline; gap: 0.6rem; padding-block: 0.55rem; }
+  .item__name { display: flex; flex-wrap: wrap; align-items: baseline; column-gap: 0.55rem; row-gap: 0.2rem; min-width: 0; }
+  .item__detail { color: var(--text-muted); font-size: 0.875em; }
+  .item__leader { flex: 1 1 1.5rem; min-width: 1.5rem; translate: 0 -0.3em; border-bottom: 2px dotted rgba(242, 238, 247, 0.22); }
+  .item__price { color: var(--amber); font-variant-numeric: tabular-nums; font-weight: 600; white-space: nowrap; }
+  .badge {
+    font-size: 0.68rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+    padding: 0.15rem 0.5rem; border-radius: var(--radius-pill);
+    color: var(--on-amber); background: var(--amber);
+    box-shadow: 0 0 16px rgba(245, 185, 113, 0.45);
+    translate: 0 -0.1em;
+  }
+  .badge[hidden] { display: none; }
+
+  /* Cocktails: eigene Karte mit Glow */
+  .cat--featured {
+    position: relative; isolation: isolate;
+    padding: clamp(1.25rem, 3vw, 2rem);
+    border-radius: var(--radius-l);
+    background:
+      radial-gradient(120% 80% at 100% 0%, rgba(217, 70, 239, 0.22), transparent 60%),
+      radial-gradient(100% 90% at 0% 100%, rgba(139, 92, 246, 0.25), transparent 60%),
+      var(--bg-elevated);
+    border: 1px solid rgba(217, 70, 239, 0.25);
+    box-shadow: 0 30px 90px -30px rgba(217, 70, 239, 0.4);
+  }
+  .cat--featured .cat__title { color: var(--text); border-bottom-color: rgba(255, 255, 255, 0.12); }
+
+  .menu__note { margin-top: var(--space-8); text-align: center; font-size: var(--fs-small); color: var(--text-muted); }
+</style>
+
+<script>
+  import { berlinMonth } from '../scripts/hours';
+
+  // Saison-Badge: Glühwein zwischen November und Februar
+  const month = berlinMonth();
+  document.querySelectorAll<HTMLElement>('[data-seasonal]').forEach((li) => {
+    const months = (li.dataset.seasonal || '').split(',').filter(Boolean).map(Number);
+    if (months.includes(month)) li.querySelector<HTMLElement>('[data-season-badge]')!.hidden = false;
+  });
+
+  // Aktive Kategorie in den Chips markieren und Chip in Sicht scrollen
+  const chips = [...document.querySelectorAll<HTMLAnchorElement>('[data-chip]')];
+  const list = document.querySelector<HTMLElement>('.chips__list')!;
+  const setActive = (id: string) => {
+    chips.forEach((c) => {
+      const on = c.hash === `#${id}`;
+      c.setAttribute('aria-current', String(on));
+      if (on) list.scrollTo({ left: c.offsetLeft - list.clientWidth / 2 + c.clientWidth / 2, behavior: 'smooth' });
+    });
+  };
+  const io = new IntersectionObserver((entries) => {
+    for (const e of entries) if (e.isIntersecting) setActive(e.target.id);
+  }, { rootMargin: '-35% 0px -60% 0px' });
+  document.querySelectorAll('[data-cat]').forEach((s) => io.observe(s));
+</script>

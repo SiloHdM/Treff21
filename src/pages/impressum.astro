@@ -1,0 +1,28 @@
+---
+import LegalLayout from '../layouts/LegalLayout.astro';
+import { info } from '../lib/site';
+---
+<LegalLayout title="Impressum">
+  <p class="notice">Platzhalter – die Pflichtangaben nach § 5 DDG fehlen noch und müssen vom Inhaber ergänzt werden (siehe TODO.md).</p>
+
+  <h2>Angaben gemäß § 5 DDG</h2>
+  <p>
+    <strong>{info.name}</strong><br />
+    <span class="todo">[[TODO: Name des Inhabers bzw. Firma und Rechtsform]]</span><br />
+    {info.address.street}<br />
+    {info.address.postalCode} {info.address.city}
+    <br /><span class="todo">[[TODO: Anschrift bestätigen – ladungsfähige Anschrift des Inhabers]]</span>
+  </p>
+
+  <h2>Kontakt</h2>
+  <p>
+    Telefon: {info.phone.display}<br />
+    E-Mail: {info.email ?? <span class="todo">[[TODO: E-Mail]]</span>}
+  </p>
+
+  <h2>Umsatzsteuer-ID</h2>
+  <p>Umsatzsteuer-Identifikationsnummer gemäß § 27 a Umsatzsteuergesetz: <span class="todo">[[TODO: USt-IdNr., falls vorhanden]]</span></p>
+
+  <h2>Verantwortlich für den Inhalt</h2>
+  <p><span class="todo">[[TODO: Name und Anschrift]]</span></p>
+</LegalLayout>

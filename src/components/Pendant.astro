@@ -1,0 +1,25 @@
+---
+// Pendelleuchte: feine Linie mit glühendem Punkt (Edison-Birne) – wiederkehrendes Motiv.
+interface Props { class?: string; length?: string }
+const { class: cls = '', length = '3.5rem' } = Astro.props;
+---
+<span class={`pendant ${cls}`} style={`--len:${length}`} aria-hidden="true"><span class="pendant__bulb"></span></span>
+<style>
+  .pendant {
+    position: relative; display: block; width: 1px; height: var(--len);
+    background: linear-gradient(to bottom, transparent, rgba(242, 238, 247, 0.45));
+  }
+  .pendant__bulb {
+    position: absolute; left: 50%; bottom: -5px; translate: -50% 0;
+    width: 9px; height: 9px; border-radius: 50%;
+    background: radial-gradient(circle at 50% 40%, #fff6e6, var(--amber) 55%, #c98a3f);
+    box-shadow: 0 0 10px 2px rgba(245, 185, 113, 0.7), 0 0 34px 8px rgba(245, 185, 113, 0.25);
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .pendant__bulb { animation: flicker 5.5s infinite var(--ease-out); }
+  }
+  @keyframes flicker {
+    0%, 100% { opacity: 1; }
+    46% { opacity: 1; } 48% { opacity: 0.72; } 50% { opacity: 1; } 52% { opacity: 0.85; } 54% { opacity: 1; }
+  }
+</style>

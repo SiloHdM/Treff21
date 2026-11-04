@@ -1,0 +1,41 @@
+{
+  "name": "Treff 21 | TwentyOne Café & Bar",
+  "shortName": "Treff 21",
+  "logoText": "Treff 21 Café | Bar",
+  "category": "Bar",
+  "address": {
+    "street": "Stuttgarter Str. 36",
+    "postalCode": "71638",
+    "city": "Ludwigsburg",
+    "country": "DE"
+  },
+  "phone": {
+    "display": "0178 5382662",
+    "tel": "+491785382662"
+  },
+  "priceRange": "10–20 €",
+  "googleRating": {
+    "stars": 4.8,
+    "count": 54,
+    "asOf": "November 2026"
+  },
+  "openingHours": null,
+  "_openingHoursFormat": "TODO: Sobald bekannt, 'openingHours' so befüllen (Zeiten nach Mitternacht sind erlaubt, z. B. bis 03:00): { \"mo\": [], \"di\": [[\"17:00\", \"01:00\"]], \"mi\": ..., \"do\": ..., \"fr\": [[\"17:00\", \"03:00\"]], \"sa\": ..., \"so\": ... } – leeres Array = Ruhetag. Dann erscheinen automatisch Live-Badge, Tabelle und JSON-LD.",
+  "instagram": null,
+  "facebook": null,
+  "email": null,
+  "reviews": [
+    {
+      "text": "Etwas in der Zeit zurück. So geht es mir immer vor Ort. Ein netter kleiner Laden am Eck mit freundlichen Menschen darin.",
+      "author": "Genaro K."
+    },
+    {
+      "text": "Wir sind Stammkunden dort, es ist ein super netter Service, sehr aufmerksam und freundlich. Die Musik ist schön …",
+      "author": "Maria C."
+    },
+    {
+      "text": "Sehr freundlich dort.",
+      "author": "Karl Peter T."
+    }
+  ]
+}

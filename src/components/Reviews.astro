@@ -1,0 +1,72 @@
+---
+import t from '../i18n/de';
+import { info, links, formatDecimal } from '../lib/site';
+import Star from './Star.astro';
+import Icon from './Icon.astro';
+const r = info.googleRating;
+const full = Math.floor(r.stars);
+---
+<section class="section reviews" aria-labelledby="reviews-title">
+  <span class="glow" style="--c: var(--glow-magenta); --size: 60vmax; top: 0; left: -20vmax;"></span>
+  <div class="container">
+    <p class="kicker" data-reveal>{t.reviews.kicker}</p>
+    <h2 class="score" id="reviews-title" data-reveal style="--i:1">
+      <span class="score__num">{formatDecimal(r.stars)}</span>
+      <span class="score__stars" role="img" aria-label={`${formatDecimal(r.stars)} von 5 Sternen`}>
+        {Array.from({ length: 5 }, (_, i) => <Star fill={i < full ? 1 : r.stars - full} />)}
+      </span>
+      <span class="score__count">{r.count} {t.reviews.reviewsLabel}</span>
+    </h2>
+    <p class="score__asof" data-reveal style="--i:2">{t.reviews.asOf}: {r.asOf}</p>
+
+    <ul class="quotes" role="list">
+      {info.reviews.map((q, i) => (
+        <li data-reveal style={`--i:${i}`}>
+          <figure class="quote">
+            <blockquote><p>„{q.text}“</p></blockquote>
+            <figcaption>
+              <span class="quote__author">{q.author}</span>
+              <span class="quote__src">{t.reviews.excerpt}</span>
+            </figcaption>
+          </figure>
+        </li>
+      ))}
+    </ul>
+
+    <a class="link-arrow" href={links.reviews} target="_blank" rel="noopener" data-reveal>
+      {t.reviews.all}<Icon name="external" /><span class="sr-only"> (öffnet Google Maps)</span>
+    </a>
+  </div>
+</section>
+
+<style>
+  .reviews { overflow-x: clip; }
+  .reviews .container { display: grid; justify-items: start; gap: var(--space-5); }
+  .score { display: flex; flex-wrap: wrap; align-items: center; column-gap: clamp(1rem, 3vw, 2rem); row-gap: var(--space-3); line-height: 1; }
+  .score__num { font-size: clamp(5rem, 18vw, 10rem); font-weight: 300; font-variation-settings: 'opsz' 144; letter-spacing: -0.04em; color: var(--amber); text-shadow: 0 0 60px rgba(245, 185, 113, 0.3); }
+  .score__stars { display: flex; gap: 0.2rem; color: var(--amber); }
+  .score__stars :global(svg) { width: clamp(1.5rem, 3.5vw, 2.25rem); height: auto; }
+  .score__count { flex-basis: 100%; font-family: var(--font-display); font-size: clamp(1.4rem, 3.5vw, 2.25rem); font-weight: 350; }
+  @media (min-width: 700px) { .score__count { flex-basis: auto; } }
+  .score__asof { font-size: var(--fs-small); color: var(--text-muted); margin-top: calc(-1 * var(--space-3)); }
+
+  .quotes {
+    width: 100%; margin-block: var(--space-6) var(--space-3);
+    display: grid; grid-auto-flow: column; grid-auto-columns: min(85%, 22rem); gap: var(--space-4);
+    overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none;
+    padding-bottom: var(--space-2);
+  }
+  .quotes::-webkit-scrollbar { display: none; }
+  .quotes > li { scroll-snap-align: start; display: grid; }
+  @media (min-width: 900px) { .quotes { grid-auto-flow: row; grid-template-columns: 1.25fr 1fr 0.75fr; overflow: visible; } }
+  .quote {
+    display: flex; flex-direction: column; justify-content: space-between; gap: var(--space-5);
+    padding: clamp(1.5rem, 3vw, 2.25rem); border-radius: var(--radius-l);
+    background: linear-gradient(160deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.01));
+    border: 1px solid var(--line);
+  }
+  .quote blockquote { font-family: var(--font-display); font-size: clamp(1.15rem, 1.6vw, 1.4rem); font-style: italic; font-weight: 350; line-height: 1.4; }
+  .quote figcaption { display: grid; gap: 0.15rem; }
+  .quote__author { font-weight: 650; }
+  .quote__src { font-size: 0.8125rem; color: var(--text-muted); }
+</style>

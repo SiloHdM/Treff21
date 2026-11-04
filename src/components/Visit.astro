@@ -1,0 +1,155 @@
+---
+import t from '../i18n/de';
+import { info, links, openingHours, weekdays } from '../lib/site';
+import Icon from './Icon.astro';
+import Leaf from './Leaf.astro';
+---
+<section class="section visit" id="besuch" aria-labelledby="visit-title">
+  <span class="glow" style="--size: 60vmax; bottom: -20vmax; right: -20vmax;"></span>
+  <Leaf class="visit__leaf" style="--w: clamp(150px, 20vw, 260px)" variant="eucalyptus" flip />
+  <div class="container">
+    <header class="visit__head">
+      <p class="kicker" data-reveal>{t.visit.kicker}</p>
+      <h2 class="h2" id="visit-title" data-reveal style="--i:1">Stuttgarter Str.&nbsp;36, <em>Ludwigsburg.</em></h2>
+    </header>
+
+    <div class="visit__grid">
+      <div class="visit__info" data-reveal>
+        <dl class="info">
+          <div class="info__row">
+            <dt><Icon name="pin" />{t.visit.address}</dt>
+            <dd>{info.address.street}<br />{info.address.postalCode} {info.address.city}</dd>
+          </div>
+          <div class="info__row">
+            <dt><Icon name="phone" />{t.visit.phone}</dt>
+            <dd><a class="info__tel" href={links.tel}>{info.phone.display}</a></dd>
+          </div>
+          <div class="info__row">
+            <dt><Icon name="wallet" />{t.visit.price}</dt>
+            <dd>{info.priceRange}</dd>
+          </div>
+          <div class="info__row">
+            <dt><Icon name="clock" />{t.visit.hours}</dt>
+            <dd>
+              {openingHours ? (
+                <table class="hours">
+                  <caption class="sr-only">{t.visit.hours}</caption>
+                  <tbody>
+                    {weekdays.map((d) => (
+                      <tr data-day={d.key}>
+                        <th scope="row">{d.label}<span class="hours__today"> · {t.visit.today}</span></th>
+                        <td>{openingHours[d.key]?.length ? openingHours[d.key].map(([o, c]) => `${o}–${c}`).join(', ') : t.visit.closedDay}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              ) : (
+                <span class="todo">[[TODO: vollständige Öffnungszeiten pro Wochentag]]</span>
+              )}
+            </dd>
+          </div>
+        </dl>
+        <div class="visit__actions">
+          <a class="btn btn--primary" href={links.route} target="_blank" rel="noopener"><Icon name="route" />{t.hero.route}<span class="sr-only"> (öffnet Google Maps)</span></a>
+          <a class="btn btn--ghost" href={links.tel}><Icon name="phone" />{t.nav.call}</a>
+        </div>
+      </div>
+
+      <div class="map" data-reveal style="--i:1" data-map>
+        <!-- Statische, gestaltete Vorschau – Google Maps wird erst nach Klick geladen (DSGVO) -->
+        <svg class="map__art" viewBox="0 0 600 480" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+          <defs>
+            <radialGradient id="mapGlow" cx="50%" cy="46%" r="55%"><stop offset="0" stop-color="#8B5CF6" stop-opacity=".35"/><stop offset="1" stop-color="#8B5CF6" stop-opacity="0"/></radialGradient>
+            <pattern id="mapGrid" width="24" height="24" patternUnits="userSpaceOnUse"><path d="M24 0H0v24" fill="none" stroke="#fff" stroke-opacity=".035"/></pattern>
+          </defs>
+          <rect width="600" height="480" fill="#15121C"/>
+          <rect width="600" height="480" fill="url(#mapGrid)"/>
+          <g fill="none" stroke="#fff" stroke-linecap="round">
+            <path d="M-20 300 C 120 280 200 250 300 220 S 480 150 640 120" stroke-opacity=".16" stroke-width="16"/>
+            <path d="M120 -20 C 160 120 230 200 300 220 S 360 380 380 520" stroke-opacity=".1" stroke-width="10"/>
+            <path d="M-20 120 L 220 170 L 300 220" stroke-opacity=".07" stroke-width="6"/>
+            <path d="M420 -20 L 450 160 L 520 500" stroke-opacity=".07" stroke-width="6"/>
+            <path d="M0 420 C 160 380 260 400 380 360 S 560 330 620 340" stroke-opacity=".06" stroke-width="5"/>
+          </g>
+          <circle cx="300" cy="220" r="220" fill="url(#mapGlow)"/>
+        </svg>
+        <div class="map__pin" aria-hidden="true"><Icon name="pin" /></div>
+        <div class="map__ui">
+          <button class="btn btn--ghost btn--small" type="button" data-map-load><Icon name="map" />{t.visit.mapLoad}</button>
+          <p class="map__note">{t.visit.mapNote} <a href="/datenschutz">Datenschutz</a></p>
+          <a class="link-arrow" href={links.maps} target="_blank" rel="noopener">{t.visit.mapOpen}<Icon name="external" /></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .visit { overflow-x: clip; }
+  .visit :global(.visit__leaf) { right: -3rem; top: -1rem; rotate: 200deg; opacity: 0.35; }
+  .visit__head { display: grid; gap: var(--space-4); margin-bottom: clamp(2.5rem, 6vw, 4.5rem); }
+  .visit__grid { display: grid; gap: clamp(2.5rem, 6vw, 4rem); }
+  @media (min-width: 960px) { .visit__grid { grid-template-columns: 5fr 6fr; align-items: stretch; } }
+
+  .info { display: grid; }
+  .info__row { display: grid; gap: 0.4rem; padding-block: var(--space-4); border-bottom: 1px solid var(--line); }
+  .info__row:first-child { padding-top: 0; }
+  @media (min-width: 560px) { .info__row { grid-template-columns: 13.5rem 1fr; gap: var(--space-4); } }
+  .info dt { display: inline-flex; align-items: center; gap: 0.6rem; white-space: nowrap; font-family: var(--font-display); font-size: 0.75rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--text-muted); padding-top: 0.25rem; }
+  .info dt :global(svg) { width: 1rem; height: 1rem; color: var(--amber); flex: none; }
+  .info dd { font-size: 1.0625rem; }
+  .info__tel { color: var(--amber); font-weight: 650; text-decoration: none; font-variant-numeric: tabular-nums; display: inline-flex; min-height: 44px; align-items: center; margin-block: -0.6rem; }
+  .info__tel:hover { text-decoration: underline; }
+
+  .hours { border-collapse: collapse; width: 100%; font-variant-numeric: tabular-nums; }
+  .hours th, .hours td { text-align: left; padding: 0.3rem 0; font-weight: 400; }
+  .hours td { text-align: right; color: var(--text-muted); }
+  .hours__today { display: none; color: var(--amber); font-size: 0.85em; }
+  .hours tr.is-today th, .hours tr.is-today td { color: var(--amber); font-weight: 650; }
+  .hours tr.is-today .hours__today { display: inline; }
+
+  .visit__actions { display: flex; flex-wrap: wrap; gap: var(--space-3); margin-top: var(--space-6); }
+
+  .map {
+    position: relative; isolation: isolate; overflow: hidden;
+    min-height: 22rem; border-radius: var(--radius-l);
+    border: 1px solid var(--line);
+    display: grid; place-items: end start;
+  }
+  .map__art, .map iframe { position: absolute; inset: 0; width: 100%; height: 100%; z-index: -1; border: 0; }
+  .map__pin {
+    position: absolute; left: 50%; top: 46%; translate: -50% -100%;
+    width: 3.25rem; height: 3.25rem; color: var(--amber);
+    filter: drop-shadow(0 0 18px rgba(245, 185, 113, 0.7));
+  }
+  .map__pin :global(svg) { width: 100%; height: 100%; fill: rgba(245, 185, 113, 0.15); }
+  .map__ui { display: grid; justify-items: start; gap: var(--space-2); padding: clamp(1.25rem, 3vw, 2rem); width: 100%; background: linear-gradient(to top, rgba(11, 10, 16, 0.92), transparent); }
+  .map__note { font-size: 0.8125rem; color: var(--text-muted); max-width: 42ch; }
+  .map.is-loaded { place-items: stretch; }
+  .map.is-loaded .map__art, .map.is-loaded .map__pin, .map.is-loaded .map__ui { display: none; }
+  .map.is-loaded iframe { z-index: 0; filter: invert(0.9) hue-rotate(200deg) saturate(0.6) brightness(0.95); }
+</style>
+
+<script>
+  import info from '../data/info.json';
+  import { berlinNow } from '../scripts/hours';
+
+  // Heutigen Tag in der Tabelle hervorheben
+  if (info.openingHours) {
+    const { day } = berlinNow();
+    document.querySelector(`.hours tr[data-day="${day}"]`)?.classList.add('is-today');
+  }
+
+  // Google Maps erst nach Klick einbetten
+  const map = document.querySelector<HTMLElement>('[data-map]');
+  map?.querySelector('[data-map-load]')?.addEventListener('click', () => {
+    const f = document.createElement('iframe');
+    f.src = 'https://www.google.com/maps?q=' + encodeURIComponent(`${info.name}, ${info.address.street}, ${info.address.postalCode} ${info.address.city}`) + '&output=embed&hl=de';
+    f.title = `Karte: ${info.address.street}, ${info.address.city}`;
+    f.loading = 'lazy';
+    f.referrerPolicy = 'no-referrer-when-downgrade';
+    map.append(f);
+    map.classList.add('is-loaded');
+    f.focus();
+  });
+</script>

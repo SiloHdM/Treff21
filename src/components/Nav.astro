@@ -1,0 +1,177 @@
+---
+import t from '../i18n/de';
+import { info, links } from '../lib/site';
+import Logo from './Logo.astro';
+import Icon from './Icon.astro';
+const items = [
+  { href: '#bar', label: t.nav.bar },
+  { href: '#karte', label: t.nav.menu },
+  { href: '#galerie', label: t.nav.gallery },
+  { href: '#besuch', label: t.nav.visit },
+];
+---
+<header class="nav" data-nav>
+  <div class="nav__inner">
+    <a class="nav__logo" href="#top"><Logo /><span class="sr-only"> – zur Startseite</span></a>
+
+    <nav class="nav__links" aria-label="Hauptnavigation">
+      <ul role="list">
+        {items.map((i) => <li><a href={i.href}>{i.label}</a></li>)}
+      </ul>
+    </nav>
+
+    <a class="btn btn--primary btn--small nav__call" href={links.tel}>
+      <Icon name="phone" /><span>{t.nav.call}</span>
+    </a>
+
+    <button class="nav__burger" type="button" aria-expanded="false" aria-controls="nav-overlay" data-nav-toggle>
+      <span class="sr-only" data-label-open>{t.nav.open}</span>
+      <span class="nav__burger-lines" aria-hidden="true"><span></span><span></span></span>
+    </button>
+  </div>
+
+</header>
+
+<div class="overlay" id="nav-overlay" data-overlay hidden>
+  <span class="glow" style="--c: var(--glow-magenta); --size: 90vmax; top: -30vmax; right: -40vmax;"></span>
+  <span class="glow" style="--size: 80vmax; bottom: -30vmax; left: -40vmax;"></span>
+  <nav aria-label="Hauptnavigation (mobil)">
+    <ol class="overlay__list" role="list">
+      {items.map((i, n) => (
+        <li style={`--i:${n}`}>
+          <a href={i.href} data-overlay-link><span class="overlay__num">0{n + 1}</span>{i.label}</a>
+        </li>
+      ))}
+    </ol>
+  </nav>
+  <div class="overlay__foot" style="--i:5">
+    <a class="btn btn--primary" href={links.tel}><Icon name="phone" />{info.phone.display}</a>
+    <a class="btn btn--ghost" href={links.route} target="_blank" rel="noopener"><Icon name="route" />{t.hero.route}</a>
+  </div>
+</div>
+
+<style>
+  .nav {
+    position: fixed; inset: 0 0 auto; z-index: var(--z-nav);
+    padding-top: env(safe-area-inset-top);
+    transition: background-color var(--dur-base) var(--ease-out), border-color var(--dur-base) var(--ease-out);
+    border-bottom: 1px solid transparent;
+  }
+  .nav.is-scrolled {
+    background: rgba(11, 10, 16, 0.72);
+    -webkit-backdrop-filter: blur(16px) saturate(140%);
+    backdrop-filter: blur(16px) saturate(140%);
+    border-bottom-color: var(--line);
+  }
+  .nav__inner {
+    width: min(100% - 2 * var(--gutter), var(--max-w)); margin-inline: auto;
+    height: var(--nav-h);
+    display: flex; align-items: center; gap: var(--space-5);
+  }
+  .nav__logo { text-decoration: none; margin-right: auto; display: inline-flex; min-height: 44px; align-items: center; }
+  .nav__links { display: none; }
+  .nav__links ul { display: flex; gap: var(--space-2); }
+  .nav__links a {
+    display: inline-flex; align-items: center; min-height: 44px; padding: 0 0.9rem;
+    font-size: 0.9375rem; font-weight: 550; text-decoration: none; color: var(--text);
+    border-radius: var(--radius-pill);
+    transition: color var(--dur-fast) var(--ease-out);
+  }
+  .nav__links a:hover, .nav__links a[aria-current='true'] { color: var(--amber); }
+  .nav__call { display: none; }
+
+  .nav__burger {
+    position: relative; z-index: 2;
+    width: 48px; height: 48px; margin-right: -10px;
+    display: grid; place-items: center; border-radius: 50%;
+  }
+  .nav__burger-lines { display: grid; gap: 7px; width: 24px; }
+  .nav__burger-lines span {
+    display: block; height: 1.5px; background: var(--text); border-radius: 2px;
+    transition: transform var(--dur-base) var(--ease-out), width var(--dur-base) var(--ease-out);
+  }
+  .nav__burger-lines span:last-child { width: 62%; justify-self: end; }
+  .nav__burger[aria-expanded='true'] .nav__burger-lines span:first-child { transform: translateY(4.25px) rotate(45deg); }
+  .nav__burger[aria-expanded='true'] .nav__burger-lines span:last-child { width: 100%; transform: translateY(-4.25px) rotate(-45deg); }
+
+  @media (min-width: 900px) {
+    .nav__links { display: block; }
+    .nav__call { display: inline-flex; }
+    .nav__burger { display: none; }
+  }
+
+  /* Vollbild-Overlay (mobil) */
+  .overlay {
+    position: fixed; inset: 0; z-index: calc(var(--z-nav) - 1);
+    background: var(--bg);
+    overflow: hidden auto;
+    display: flex; flex-direction: column; justify-content: space-between;
+    padding: calc(var(--nav-h) + env(safe-area-inset-top) + var(--space-6)) var(--gutter) calc(var(--space-6) + env(safe-area-inset-bottom));
+    isolation: isolate;
+  }
+  .overlay[hidden] { display: none; }
+  .overlay__list { display: grid; gap: var(--space-2); }
+  .overlay__list a {
+    display: flex; align-items: baseline; gap: var(--space-4);
+    font-family: var(--font-display); font-size: clamp(2.75rem, 13vw, 4.5rem); line-height: 1.1;
+    font-weight: 350; letter-spacing: -0.02em; text-decoration: none;
+  }
+  .overlay__list a:hover { color: var(--amber); }
+  .overlay__num { font-family: var(--font-body); font-size: 0.8rem; letter-spacing: 0.1em; color: var(--text-muted); font-weight: 600; translate: 0 -0.6em; }
+  .overlay__foot { display: grid; gap: var(--space-3); margin-top: var(--space-7); }
+  .overlay__foot .btn { width: 100%; }
+  @media (prefers-reduced-motion: no-preference) {
+    .overlay.is-open .overlay__list li, .overlay.is-open .overlay__foot {
+      animation: rise 600ms var(--ease-out) both; animation-delay: calc(80ms + var(--i) * 60ms);
+    }
+  }
+  @keyframes rise { from { opacity: 0; transform: translateY(24px); } }
+</style>
+
+<script>
+  const nav = document.querySelector<HTMLElement>('[data-nav]')!;
+  const toggle = nav.querySelector<HTMLButtonElement>('[data-nav-toggle]')!;
+  const overlay = document.querySelector<HTMLElement>('[data-overlay]')!;
+  const label = toggle.querySelector('[data-label-open]')!;
+
+  // Blur-Hintergrund nach dem Hero-Anfang
+  const onScroll = () => nav.classList.toggle('is-scrolled', window.scrollY > 24);
+  onScroll();
+  window.addEventListener('scroll', onScroll, { passive: true });
+
+  // Burger → Vollbild-Overlay
+  const setOpen = (open: boolean) => {
+    toggle.setAttribute('aria-expanded', String(open));
+    label.textContent = open ? 'Menü schließen' : 'Menü öffnen';
+    overlay.hidden = !open;
+    overlay.classList.toggle('is-open', open);
+    document.documentElement.style.overflow = open ? 'hidden' : '';
+    nav.classList.toggle('is-scrolled', open || window.scrollY > 24);
+    if (open) overlay.querySelector<HTMLElement>('a')?.focus();
+  };
+  toggle.addEventListener('click', () => setOpen(toggle.getAttribute('aria-expanded') !== 'true'));
+  overlay.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => setOpen(false)));
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !overlay.hidden) { setOpen(false); toggle.focus(); }
+  });
+  // Fokus im Overlay halten
+  document.addEventListener('keydown', (e) => {
+    if (e.key !== 'Tab' || overlay.hidden) return;
+    const f = [toggle, ...overlay.querySelectorAll<HTMLElement>('a')];
+    const i = f.indexOf(document.activeElement as HTMLElement);
+    if (e.shiftKey && i <= 0) { e.preventDefault(); f[f.length - 1].focus(); }
+    else if (!e.shiftKey && i === f.length - 1) { e.preventDefault(); f[0].focus(); }
+  });
+  matchMedia('(min-width: 900px)').addEventListener('change', (m) => m.matches && setOpen(false));
+
+  // Aktiver Abschnitt in der Navigation
+  const links = [...nav.querySelectorAll<HTMLAnchorElement>('.nav__links a')];
+  const io = new IntersectionObserver((entries) => {
+    for (const e of entries) if (e.isIntersecting) {
+      links.forEach((l) => l.setAttribute('aria-current', String(l.hash === `#${e.target.id}`)));
+    }
+  }, { rootMargin: '-45% 0px -50% 0px' });
+  links.forEach((l) => { const s = document.querySelector(l.hash); if (s) io.observe(s); });
+  // Zurück im Hero bzw. in „Stimmen“ → keine falsche Markierung
+  document.querySelectorAll('#top, .reviews').forEach((s) => io.observe(s));
+</script>

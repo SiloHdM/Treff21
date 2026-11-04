@@ -1,0 +1,200 @@
+---
+import t from '../i18n/de';
+import { info, links, openingHours } from '../lib/site';
+import Icon from './Icon.astro';
+import Pendant from './Pendant.astro';
+---
+<section class="hero" id="top" aria-labelledby="hero-title">
+  <div class="hero__media" aria-hidden="true">
+    <picture>
+      <source media="(max-width: 767px)" srcset="/video/hero-poster-mobile.webp" type="image/webp" />
+      <img class="hero__poster" src="/video/hero-poster.webp" alt="" width="1920" height="1080" fetchpriority="high" decoding="async" />
+    </picture>
+    <!-- Quellen werden per JS gesetzt (720p auf kleinen Screens, kein Video bei reduzierter Bewegung / Datensparmodus) -->
+    <video class="hero__video" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"
+      data-hero-video data-webm="/video/hero-1080.webm" data-mp4="/video/hero-1080.mp4" data-mp4-small="/video/hero-720.mp4"></video>
+    <span class="hero__tint"></span>
+    <span class="hero__shade"></span>
+  </div>
+
+  <div class="hero__content container">
+    {openingHours && (
+      <p class="hero__status" data-open-status hidden>
+        <span class="hero__status-dot" aria-hidden="true"></span><span data-open-label></span>
+      </p>
+    )}
+    <p class="kicker hero__kicker" data-reveal>{t.hero.kicker}</p>
+    <h1 class="hero__title" id="hero-title">{info.shortName}</h1>
+    <p class="hero__sub" data-reveal style="--i:2">
+      <Icon name="pin" />{info.address.street} · {info.address.city}
+    </p>
+    <div class="hero__actions" data-reveal style="--i:3">
+      <a class="btn btn--primary" href={links.route} target="_blank" rel="noopener">
+        <Icon name="route" />{t.hero.route}<span class="sr-only"> (öffnet Google Maps)</span>
+      </a>
+      <a class="btn btn--ghost" href="#karte"><Icon name="arrowDown" />{t.hero.menu}</a>
+    </div>
+  </div>
+
+  <a class="hero__scroll" href="#bar" aria-label={t.hero.scroll}>
+    <Pendant length="clamp(3rem, 9vh, 5.5rem)" />
+  </a>
+
+  <button class="hero__toggle" type="button" data-video-toggle hidden aria-pressed="false">
+    <span class="sr-only" data-video-label>{t.hero.pause}</span>
+    <span data-icon-pause><Icon name="pause" /></span>
+    <span data-icon-play hidden><Icon name="play" /></span>
+  </button>
+</section>
+
+<style>
+  .hero {
+    position: relative; isolation: isolate;
+    min-height: 100svh;
+    display: grid; align-items: end;
+    padding-bottom: clamp(6.5rem, 16vh, 9.5rem);
+    overflow: hidden;
+  }
+  .hero__media { position: absolute; inset: 0; z-index: -1; background: var(--bg); }
+  .hero__poster, .hero__video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .hero__video { opacity: 0; transition: opacity 1.2s var(--ease-out); }
+  /* gleicher Bildausschnitt wie das mobile Hochformat-Poster */
+  @media (max-width: 767px) { .hero__video { object-position: 62% 50%; } }
+  .hero__video.is-playing { opacity: 1; }
+  /* sehr leichtes violettes Overlay */
+  .hero__tint { position: absolute; inset: 0; background: rgba(76, 29, 149, 0.16); mix-blend-mode: multiply; }
+  /* dunkler Verlauf von unten → Textlesbarkeit (Kontrast ≥ 4.5:1 im Textbereich) */
+  .hero__shade {
+    position: absolute; inset: 0;
+    background:
+      linear-gradient(to top, var(--bg) 0%, rgba(11, 10, 16, 0.88) 30%, rgba(11, 10, 16, 0.52) 60%, rgba(11, 10, 16, 0.1) 80%, transparent 90%),
+      linear-gradient(to bottom, rgba(11, 10, 16, 0.55), transparent 22%);
+  }
+
+  .hero__content { display: grid; justify-items: start; gap: var(--space-4); }
+  .hero__kicker { color: var(--text); text-shadow: 0 1px 12px rgba(0, 0, 0, 0.6); }
+  .hero__title {
+    font-size: var(--fs-hero);
+    font-weight: 300;
+    font-variation-settings: 'opsz' 144;
+    letter-spacing: -0.035em;
+    line-height: 0.9;
+    margin-left: -0.04em;
+    text-shadow: 0 2px 40px rgba(11, 10, 16, 0.5);
+  }
+  .hero__sub {
+    display: inline-flex; align-items: center; gap: 0.5em;
+    color: var(--text); font-weight: 500;
+  }
+  .hero__sub :global(svg) { width: 1.1em; height: 1.1em; color: var(--amber); }
+  .hero__actions { display: flex; flex-wrap: wrap; gap: var(--space-3); margin-top: var(--space-3); }
+  @media (max-width: 479px) {
+    .hero__actions { width: 100%; }
+    .hero__actions .btn { flex: 1 1 100%; }
+  }
+
+  .hero__status {
+    display: inline-flex; align-items: center; gap: 0.55em;
+    padding: 0.35rem 0.8rem; border-radius: var(--radius-pill);
+    font-size: var(--fs-small); font-weight: 600;
+    background: rgba(11, 10, 16, 0.55); border: 1px solid var(--line-strong);
+    -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
+  }
+  .hero__status[hidden] { display: none; }
+  .hero__status-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--text-muted); }
+  .hero__status.is-open .hero__status-dot { background: #7ee0a1; box-shadow: 0 0 10px #7ee0a1; }
+
+  .hero__scroll {
+    position: absolute; top: 0; left: 50%; translate: -50% 0;
+    display: none; padding: 0 20px 14px;
+  }
+  @media (min-width: 768px) and (min-height: 700px) {
+    .hero__scroll { display: block; top: auto; bottom: 0; }
+    .hero__scroll :global(.pendant) { transform-origin: top; }
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .hero__scroll :global(.pendant) { animation: sway 6s ease-in-out infinite; transform-origin: 50% 0; }
+  }
+  @keyframes sway { 0%, 100% { rotate: -2deg; } 50% { rotate: 2deg; } }
+
+  .hero__toggle {
+    position: absolute; right: var(--gutter); bottom: var(--space-5);
+    width: 44px; height: 44px; border-radius: 50%;
+    display: grid; place-items: center;
+    color: var(--text); background: rgba(11, 10, 16, 0.5);
+    border: 1px solid var(--line-strong);
+    -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
+    transition: border-color var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
+  }
+  .hero__toggle[hidden] { display: none; }
+  .hero__toggle:hover { border-color: var(--amber); color: var(--amber); }
+  .hero__toggle :global(svg) { width: 16px; height: 16px; }
+  .hero__toggle [hidden] { display: none; }
+</style>
+
+<script>
+  import info from '../data/info.json';
+  import { isOpenNow } from '../scripts/hours';
+
+  // ---------- Hintergrundvideo ----------
+  const video = document.querySelector<HTMLVideoElement>('[data-hero-video]');
+  const toggle = document.querySelector<HTMLButtonElement>('[data-video-toggle]');
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const saveData = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection?.saveData;
+
+  if (video && toggle && !reduce && !saveData) {
+    const small = matchMedia('(max-width: 767px)').matches;
+    const d = video.dataset;
+    const sources = small
+      ? [[d.mp4Small!, 'video/mp4']]
+      : [[d.webm!, 'video/webm'], [d.mp4!, 'video/mp4']];
+    const play = () => video.play().then(() => video.classList.add('is-playing')).catch(() => {});
+    // Video erst nach dem Seitenaufbau laden – Poster, Schriften und Text haben Vorrang (LCP)
+    const start = () => {
+      for (const [src, type] of sources) {
+        const s = document.createElement('source');
+        s.src = src; s.type = type; video.append(s);
+      }
+      video.preload = 'auto';
+      video.addEventListener('canplay', play, { once: true });
+      video.load();
+    };
+    const idle = (cb: () => void) => ('requestIdleCallback' in window ? requestIdleCallback(cb, { timeout: 2500 }) : setTimeout(cb, 800));
+    if (document.readyState === 'complete') idle(start);
+    else addEventListener('load', () => idle(start), { once: true });
+
+    // Pause-Button (bewegte Inhalte > 5 s müssen anhaltbar sein)
+    toggle.hidden = false;
+    const label = toggle.querySelector('[data-video-label]')!;
+    const iPause = toggle.querySelector<HTMLElement>('[data-icon-pause]')!;
+    const iPlay = toggle.querySelector<HTMLElement>('[data-icon-play]')!;
+    let userPaused = false;
+    const sync = () => {
+      const paused = video.paused;
+      toggle.setAttribute('aria-pressed', String(paused));
+      label.textContent = paused ? 'Hintergrundvideo abspielen' : 'Hintergrundvideo anhalten';
+      iPause.hidden = paused; iPlay.hidden = !paused;
+    };
+    toggle.addEventListener('click', () => {
+      userPaused = !video.paused;
+      if (video.paused) play(); else video.pause();
+    });
+    video.addEventListener('play', sync);
+    video.addEventListener('pause', sync);
+
+    // außerhalb des Viewports anhalten (spart Akku & Daten)
+    new IntersectionObserver(([e]) => {
+      if (userPaused) return;
+      if (e.isIntersecting) play(); else video.pause();
+    }).observe(video);
+  }
+
+  // ---------- Live-Status (nur wenn Öffnungszeiten gepflegt sind) ----------
+  const status = document.querySelector<HTMLElement>('[data-open-status]');
+  if (status && info.openingHours) {
+    const open = isOpenNow(info.openingHours as never);
+    status.querySelector('[data-open-label]')!.textContent = open ? 'Jetzt geöffnet' : 'Geschlossen';
+    status.classList.toggle('is-open', open);
+    status.hidden = false;
+  }
+</script>

@@ -1,0 +1,98 @@
+---
+import '../styles/global.css';
+import t from '../i18n/de';
+import { info, openingHours, weekdays, siteUrl } from '../lib/site';
+// Schriften selbst gehostet – die zwei wichtigsten Dateien vorladen
+import frauncesUrl from '@fontsource-variable/fraunces/files/fraunces-latin-opsz-normal.woff2?url';
+import manropeUrl from '@fontsource-variable/manrope/files/manrope-latin-wght-normal.woff2?url';
+
+interface Props {
+  title?: string;
+  description?: string;
+  noindex?: boolean;
+  preloadPoster?: boolean;
+}
+const { title = t.meta.title, description = t.meta.description, noindex = false, preloadPoster = false } = Astro.props;
+const canonical = siteUrl ? new URL(Astro.url.pathname, siteUrl).href : undefined;
+const ogImage = siteUrl ? new URL('/og.jpg', siteUrl).href : '/og.jpg';
+
+// Strukturierte Daten – nur echte Fakten aus src/data/info.json
+const jsonLd: Record<string, unknown> = {
+  '@context': 'https://schema.org',
+  '@type': 'BarOrPub',
+  name: info.name,
+  alternateName: info.shortName,
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: info.address.street,
+    postalCode: info.address.postalCode,
+    addressLocality: info.address.city,
+    addressCountry: info.address.country,
+  },
+  telephone: info.phone.tel,
+  priceRange: info.priceRange,
+  servesCuisine: 'Getränke',
+  aggregateRating: {
+    '@type': 'AggregateRating',
+    ratingValue: info.googleRating.stars,
+    reviewCount: info.googleRating.count,
+    bestRating: 5,
+  },
+  image: ogImage,
+};
+if (siteUrl) jsonLd.url = siteUrl;
+if (openingHours) {
+  jsonLd.openingHoursSpecification = weekdays.flatMap((d) =>
+    (openingHours[d.key] ?? []).map(([opens, closes]) => ({
+      '@type': 'OpeningHoursSpecification',
+      dayOfWeek: `https://schema.org/${d.schema}`,
+      opens,
+      closes,
+    })),
+  );
+}
+---
+<!doctype html>
+<html lang={t.lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    {canonical && <link rel="canonical" href={canonical} />}
+    {noindex && <meta name="robots" content="noindex" />}
+    <meta name="theme-color" content="#0B0A10" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="de_DE" />
+    <meta property="og:site_name" content={info.shortName} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Bartheke mit facettierter Pyramidendecke und warm leuchtenden Edison-Glühbirnen" />
+    {canonical && <meta property="og:url" content={canonical} />}
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <link rel="preload" as="font" type="font/woff2" href={frauncesUrl} crossorigin />
+    <link rel="preload" as="font" type="font/woff2" href={manropeUrl} crossorigin />
+    {preloadPoster && (
+      <>
+        <link rel="preload" as="image" href="/video/hero-poster-mobile.webp" type="image/webp" media="(max-width: 767px)" fetchpriority="high" />
+        <link rel="preload" as="image" href="/video/hero-poster.webp" type="image/webp" media="(min-width: 768px)" fetchpriority="high" />
+      </>
+    )}
+
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+    <!-- Kennzeichnet, dass JS läuft (für Reveal-Animationen ohne „unsichtbaren Inhalt“ ohne JS) -->
+    <script is:inline>document.documentElement.classList.add('js');</script>
+  </head>
+  <body>
+    <a class="skip-link" href="#inhalt">{t.skip}</a>
+    <slot />
+  </body>
+</html>

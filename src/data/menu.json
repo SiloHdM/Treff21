@@ -1,0 +1,123 @@
+{
+  "note": "Preise inkl. MwSt. Änderungen vorbehalten.",
+  "columns": [
+    ["heiss", "alkoholfrei", "bier", "weine"],
+    ["longdrinks", "aperitif", "cocktails", "alkoholfreie-cocktails", "flaschen", "shots"]
+  ],
+  "categories": [
+    {
+      "id": "heiss",
+      "title": "Heiße Getränke",
+      "short": "Heiß",
+      "items": [
+        { "name": "Kaffee", "price": 2.5 },
+        { "name": "Espresso", "price": 2.5 },
+        { "name": "Cappuccino", "price": 3.5 },
+        { "name": "Latte Macchiato", "price": 3.5 },
+        { "name": "Milchkaffee", "price": 3.0 },
+        { "name": "Tee", "detail": "versch. Sorten", "price": 2.5 }
+      ]
+    },
+    {
+      "id": "alkoholfrei",
+      "title": "Alkoholfreie Getränke",
+      "short": "Alkoholfrei",
+      "items": [
+        { "name": "Coca-Cola, Fanta, Mezzo Mix", "detail": "0,2 l", "price": 2.5 },
+        { "name": "Schweppes Bitter Lemon, Ginger Ale", "detail": "0,2 l", "price": 2.5 },
+        { "name": "Holunderschorle", "detail": "0,2 l", "price": 3.5 },
+        { "name": "Apfelsaft, Orangensaft", "detail": "0,2 l", "price": 3.5 },
+        { "name": "Eistee", "detail": "0,33 l", "price": 3.5 },
+        { "name": "Stilles Wasser / Mineralwasser", "detail": "0,25 l", "price": 2.4 },
+        { "name": "Red Bull", "detail": "0,25 l", "price": 4.0 }
+      ]
+    },
+    {
+      "id": "bier",
+      "title": "Bier",
+      "short": "Bier",
+      "items": [
+        { "name": "Desperados, Corona", "detail": "0,33 l", "price": 4.0 },
+        { "name": "Heineken, Beck's, Wulle", "detail": "0,33 l", "price": 3.0 },
+        { "name": "Hofbräu", "detail": "0,5 l", "price": 2.5, "todo": "Preis prüfen" },
+        { "name": "Hefeweizen", "detail": "0,5 l", "price": 4.0 },
+        { "name": "Kristallweizen", "detail": "0,5 l", "price": 3.5 }
+      ]
+    },
+    {
+      "id": "weine",
+      "title": "Weine",
+      "short": "Wein",
+      "items": [
+        { "name": "Weißwein, Rotwein", "price": 4.0 },
+        { "name": "Weinschorle", "detail": "süß oder sauer", "price": 3.5 },
+        { "name": "Glühwein", "detail": "nur zur Winterzeit", "price": 4.5, "seasonal": [11, 12, 1, 2] }
+      ]
+    },
+    {
+      "id": "longdrinks",
+      "title": "Longdrinks",
+      "short": "Longdrinks",
+      "items": [
+        { "name": "Alle Sorten", "detail": "4 cl", "price": 5.5 }
+      ]
+    },
+    {
+      "id": "aperitif",
+      "title": "Aperitif",
+      "short": "Aperitif",
+      "items": [
+        { "name": "Hugo", "price": 5.5 },
+        { "name": "Aperol Spritz", "price": 6.0 },
+        { "name": "Lillet Berry", "price": 6.0 }
+      ]
+    },
+    {
+      "id": "cocktails",
+      "title": "Cocktails",
+      "short": "Cocktails",
+      "featured": true,
+      "items": [
+        { "name": "Mojito", "price": 7.0 },
+        { "name": "Piña Colada", "price": 7.0 },
+        { "name": "Sex on the Beach", "price": 7.0 },
+        { "name": "Cuba Libre", "price": 7.0 },
+        { "name": "Gin Tonic", "price": 7.0 },
+        { "name": "Caipirinha", "price": 7.0 },
+        { "name": "Whisky Sour", "price": 7.0 }
+      ]
+    },
+    {
+      "id": "alkoholfreie-cocktails",
+      "title": "Alkoholfreie Cocktails",
+      "short": "Alkoholfreie Cocktails",
+      "items": [
+        { "name": "Ipanema", "price": 7.0 }
+      ]
+    },
+    {
+      "id": "flaschen",
+      "title": "Flaschen",
+      "short": "Flaschen",
+      "subtitle": "70 cl",
+      "items": [
+        { "name": "Jack Daniel's", "price": 85.0 },
+        { "name": "Wodka", "price": 65.0 },
+        { "name": "Raki", "price": 75.0 },
+        { "name": "Chivas Regal", "price": 90.0 }
+      ]
+    },
+    {
+      "id": "shots",
+      "title": "Kurze / Shots",
+      "short": "Shots",
+      "subtitle": "2 cl",
+      "items": [
+        { "name": "Jägermeister", "price": 2.5 },
+        { "name": "Ouzo", "price": 2.5 },
+        { "name": "Tequila", "price": 2.5 },
+        { "name": "weitere Sorten", "price": 2.5 }
+      ]
+    }
+  ]
+}
